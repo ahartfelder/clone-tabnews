@@ -1,7 +1,9 @@
-function status(req, res) {
-  res
-    .status(200)
-    .json({ message: "alunos do curso.dev são pessoas acima da média!" });
+import database from "../../../../infra/database.js";
+
+async function status(req, res) {
+  const result = await database.query("SELECT 1 + 1 as sum;");
+  console.log(result);
+  res.status(200).json({ message: "Status OK!" });
 }
 
 export default status;
