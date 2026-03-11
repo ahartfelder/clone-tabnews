@@ -1,13 +1,12 @@
-import database from "infra/database.js";
+import database from "infra/database";
 
 async function status(req, res) {
   const updatedAt = new Date().toISOString();
   const databaseVersion = await database.query("SHOW server_version;");
   const databaseMaxConnections = await database.query("SHOW max_connections;");
-  const databaseName = process.env.POSTGRES_DB;
   const databaseOpenedConnections = await database.query({
     text: "SELECT count(*)::int FROM pg_stat_activity WHERE datname = $1;",
-    values: [databaseName],
+    values: [process.env.POSTGRES_DB],
   });
 
   res.status(200).json({
